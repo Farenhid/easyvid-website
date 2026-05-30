@@ -1,0 +1,32 @@
+name: Enable HTTPS when certificate is ready
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+
+jobs:
+  enable-https:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Turn on Enforce HTTPS for easyvid.online
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          response="$(gh api --method PUT repos/${{ github.repository }}/pages \
+            --input - <<'JSON'
+          {"cname":"easyvid.online","https_enforced":true}
+          JSON
+          )"
+          enforced="$(echo "$response" | jq -r '.https_enforced')"
+          if [ "$enforced" = "true" ]; then
+            echo "HTTPS enforced successfully."
+          else
+            echo "Pages updated but https_enforced is not true yet."
+            exit 1
+          fi
