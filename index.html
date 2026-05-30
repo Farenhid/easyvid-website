@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EasyVid | Cinematic Restaurant AI Video Ads</title>
+<meta name="description" content="EasyVid turns your restaurant photos into cinematic AI video ads. Professional social media content from easyvid.online — no film crew needed."/>
+<meta name="theme-color" content="#0A0A0A"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes glow {
+            0%, 100% { opacity: 0.5; filter: blur(40px); }
+            50% { opacity: 0.8; filter: blur(60px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-glow { animation: glow 4s ease-in-out infinite; }
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
+        }
+        .amber-gradient {
+            background: linear-gradient(135deg, #ffc174 0%, #fe580b 100%);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #ffc174, #ffdbcf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #353534; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ffc174; }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .bloom-shadow {
+            box-shadow: 0 0 120px 0 rgba(245, 158, 11, 0.1);
+        }
+        .transform-slider {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto;
+            aspect-ratio: 9 / 16;
+            overflow: hidden;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: ew-resize;
+            user-select: none;
+            touch-action: none;
+        }
+        .transform-left .gmaps-mock,
+        .transform-right .after-media { width: 340px; }
+        .transform-left,
+        .transform-right {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .transform-left {
+            left: 0;
+            width: 50%;
+            z-index: 2;
+        }
+        .transform-right {
+            right: 0;
+            width: 100%;
+            z-index: 1;
+        }
+        .transform-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 3px;
+            background: #f59e0b;
+            z-index: 10;
+            transform: translateX(-50%);
+            box-shadow: 0 0 16px rgba(245, 158, 11, 0.6);
+            pointer-events: none;
+        }
+        .transform-handle-knob {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+            background: #0A0A0A;
+            border: 2px solid #f59e0b;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+            color: #f59e0b;
+        }
+        .collage-img {
+            position: absolute;
+            border: 2px solid #fff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            filter: grayscale(20%) sepia(10%);
+            pointer-events: none;
+        }
+        @media (min-width: 768px) {
+            .collage-img { width: 130px; height: 130px; }
+        }
+
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "surface-container-highest": "#353534",
+                "surface-tint": "#ffb95f",
+                "inverse-on-surface": "#313030",
+                "background": "#0A0A0A",
+                "primary-fixed-dim": "#ffb95f",
+                "primary": "#ffc174",
+                "on-tertiary": "#00344a",
+                "on-primary": "#472a00",
+                "tertiary-container": "#1abdff",
+                "on-primary-fixed": "#2a1700",
+                "surface-container": "#201f1f",
+                "secondary-fixed-dim": "#ffb59c",
+                "primary-fixed": "#ffddb8",
+                "on-primary-fixed-variant": "#653e00",
+                "surface-container-lowest": "#0e0e0e",
+                "inverse-surface": "#e5e2e1",
+                "surface-variant": "#353534",
+                "surface-container-high": "#2a2a2a",
+                "on-tertiary-fixed-variant": "#004c6a",
+                "surface-dim": "#131313",
+                "on-secondary-fixed": "#390c00",
+                "inverse-primary": "#855300",
+                "on-tertiary-fixed": "#001e2d",
+                "on-secondary": "#5c1900",
+                "secondary": "#ffb59c",
+                "tertiary-fixed-dim": "#7fd0ff",
+                "on-error-container": "#ffdad6",
+                "error-container": "#93000a",
+                "primary-container": "#f59e0b",
+                "on-tertiary-container": "#004966",
+                "on-surface-variant": "#d8c3ad",
+                "outline-variant": "#534434",
+                "surface": "#131313",
+                "secondary-fixed": "#ffdbcf",
+                "on-surface": "#e5e2e1",
+                "on-background": "#e5e2e1",
+                "surface-container-low": "#1c1b1b",
+                "secondary-container": "#fe580b",
+                "tertiary-fixed": "#c5e7ff",
+                "outline": "#a08e7a",
+                "on-error": "#690005",
+                "error": "#ffb4ab",
+                "surface-bright": "#3a3939",
+                "on-secondary-fixed-variant": "#822800",
+                "on-primary-container": "#613b00",
+                "on-secondary-container": "#511500",
+                "tertiary": "#8fd5ff"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "gutter": "24px",
+                "margin-mobile": "16px",
+                "base": "8px",
+                "margin-desktop": "48px",
+                "container-max": "1280px"
+              },
+              "fontFamily": {
+                "label-sm": ["Geist"],
+                "headline-md": ["Geist"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "label-md": ["Geist"],
+                "headline-xl": ["Geist"],
+                "display-lg-mobile": ["Geist"],
+                "display-lg": ["Geist"]
+              },
+              "fontSize": {
+                "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "headline-xl": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "display-lg-mobile": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_32px_0_rgba(255,193,116,0.1)]">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 max-w-container-max mx-auto">
+<a href="#" class="text-headline-md font-headline-md font-bold tracking-tighter text-primary">EasyVid</a>
+<div class="hidden md:flex gap-8">
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#how">How it Works</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#transformations">Transform</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#portfolio">Portfolio</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#aesthetics">Styles</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#faq">FAQ</a>
+</div>
+<div class="flex items-center gap-3">
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="hidden sm:inline-flex bg-primary hover:bg-primary-container text-on-primary px-6 py-2.5 rounded-full text-label-md font-label-md transition-all duration-300 transform hover:scale-105 active:scale-95">Get Started</a>
+<button id="mobile-menu-btn" type="button" class="md:hidden w-10 h-10 rounded-full glass-card flex items-center justify-center" aria-expanded="false" aria-controls="mobile-nav" aria-label="Open menu">
+<span id="mobile-menu-icon" class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</div>
+<div id="mobile-nav" class="hidden md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-xl">
+<div class="max-w-container-max mx-auto px-margin-mobile py-6 flex flex-col gap-4">
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#how">How it Works</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#transformations">Transform</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#portfolio">Portfolio</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#aesthetics">Styles</a>
+<a class="text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#faq">FAQ</a>
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="amber-gradient text-white px-6 py-3 rounded-xl text-label-md font-bold text-center">Get Started</a>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
+<!-- Ambient Glows -->
+<div class="absolute top-1/4 -left-20 w-96 h-96 bg-primary/20 rounded-full animate-glow blur-3xl"></div>
+<div class="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary-container/10 rounded-full animate-glow blur-3xl" style="animation-delay: 2s;"></div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="z-10">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-label-sm font-label-sm text-primary-fixed mb-6">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+                    EASYVID.ONLINE · POWERED BY AI
+                </div>
+<h1 class="text-display-lg-mobile md:text-display-lg font-display-lg mb-6 leading-tight">
+                    Turn Restaurant Photos Into <span class="text-gradient">Cinematic AI Ads</span>
+</h1>
+<p class="text-body-lg text-on-surface-variant mb-10 max-w-lg">
+                    Transform your existing Google Maps photos into high-converting social media videos. Professional cinematography without the crew.
+                </p>
+<div class="flex flex-wrap gap-4 mb-12">
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="amber-gradient text-white px-8 py-4 rounded-xl text-label-md font-bold flex items-center gap-2 group transition-all">
+                        Order Your Video
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<button data-scroll-target="#transformations" type="button" class="glass-card hover:bg-white/10 px-8 py-4 rounded-xl text-label-md font-bold transition-all">
+                        View Examples
+                    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-white/10 pt-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">no_photography</span>
+<span class="text-label-sm text-on-surface-variant">No filming needed</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">bolt</span>
+<span class="text-label-sm text-on-surface-variant">Instant delivery</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">trending_up</span>
+<span class="text-label-sm text-on-surface-variant">Optimized for Reels</span>
+</div>
+</div>
+</div>
+<!-- Right Visual Composition -->
+<div class="relative z-0 h-[600px] flex items-center justify-center">
+<!-- 3D Mockup Container -->
+<div class="relative w-full h-full flex items-center justify-center animate-float">
+<div class="absolute w-64 h-[450px] bg-surface-container-high rounded-[2.5rem] border-4 border-white/10 shadow-2xl rotate-[-12deg] z-10 overflow-hidden -translate-x-20">
+<img class="w-full h-full object-cover opacity-80" data-alt="A vertical cinematic video frame featuring slow-motion steam rising from a perfectly plated gourmet steak in a dark atmospheric restaurant setting. The lighting is dramatic and moody, with warm amber highlights on the juice of the meat. High-end food commercial style with soft depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFeYDimvlYJSpaGr7p4YG3b6SKb8sT9DvlbdRAa68hWs-KG6zwgmnF0zs3m4sPqIHLJ1M3yBxcSsuS42-tWI8rewaurPM8AIpcCEfNU9hcCjxZTmwbDeZjW2Gw6TOwbydmre5F6M-5lSCvrgs-71yohzNSJgLRgXlFqD9s_e0NzbYuN6bxJFmSz629tWYcALR93LZTaq_vLBR0oEuwYbxDO3pNGaqTGBvLSFgZvv1LyVI9iDI6pg4EinvQwDq3hKCK-RG5GWTr5i8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+</div>
+<div class="absolute w-64 h-[450px] bg-surface-container-high rounded-[2.5rem] border-4 border-white/10 shadow-2xl rotate-[5deg] z-20 overflow-hidden translate-x-12 translate-y-8">
+<img class="w-full h-full object-cover" data-alt="A vertical cinematic video scene showing a professional bartender pouring a golden cocktail into a glass with crystal clear ice. Tiny droplets of liquid catch the warm restaurant lighting, creating a sparkling bokeh effect. The atmosphere is luxury lounge with rich wood textures and soft golden glows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvyF1zgMr6LaaSkSknEoJdgWhctQibTfdnTuxbCfAe9bAknrSmSobfewypa4ieuRxHALfnndYdfTpNvMjXz0_CfL93OO4Gn7mm78jbwOkeFkuJFQA_VbHCv9sc15pi232Ighu-EFIJ6r8MCW6yVMn3Jqg3Hkywqf3rHlhxDQQGOYKi4dXo5dpVNqXOf-dCz1_JE38yX3xyGeQnlq-X68MS4XnAV5GB3lO4yLkIpoigBPo8GCwp8acYFKHmllr51BT0-lSdafNJm48"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+<span class="material-symbols-outlined text-white text-3xl">play_arrow</span>
+</div>
+</div>
+</div>
+<!-- Glass Background Decor -->
+<div class="absolute w-full h-full border border-white/5 rounded-full scale-110 opacity-20 pointer-events-none"></div>
+<div class="absolute w-full h-full border border-white/5 rounded-full scale-75 opacity-40 pointer-events-none"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-24 bg-surface-container-lowest" id="how">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-20 reveal">
+<h2 class="text-headline-xl font-headline-xl mb-4">How it Works</h2>
+<p class="text-body-md text-on-surface-variant max-w-2xl mx-auto">Three simple steps to professional video marketing for your restaurant.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter relative">
+<!-- Connecting Line (Desktop) -->
+<div class="hidden md:block absolute top-1/2 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-y-1/2"></div>
+<!-- Step 1 -->
+<div class="glass-card p-10 rounded-3xl z-10 text-center reveal" style="transition-delay: 0.1s;">
+<div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-8 border border-primary/20">
+<span class="material-symbols-outlined text-primary text-3xl">location_on</span>
+</div>
+<h3 class="text-headline-md font-bold mb-4">Share Your Google Maps Link</h3>
+<p class="text-body-md text-on-surface-variant">Share your Google Maps link. We use the photos already on your listing.</p>
+</div>
+<!-- Step 2 -->
+<div class="glass-card p-10 rounded-3xl z-10 text-center border-primary/30 reveal" style="transition-delay: 0.2s;">
+<div class="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-8 border border-primary/40">
+<span class="material-symbols-outlined text-primary text-3xl">psychology</span>
+</div>
+<h3 class="text-headline-md font-bold mb-4">AI Magic</h3>
+<p class="text-body-md text-on-surface-variant">Our AI engine analyzes textures, lighting, and ingredients to generate motion.</p>
+</div>
+<!-- Step 3 -->
+<div class="glass-card p-10 rounded-3xl z-10 text-center reveal" style="transition-delay: 0.3s;">
+<div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-8 border border-primary/20">
+<span class="material-symbols-outlined text-primary text-3xl">check_circle</span>
+</div>
+<h3 class="text-headline-md font-bold mb-4">Download &amp; Post</h3>
+<p class="text-body-md text-on-surface-variant">Receive your 4K cinematic ad instantly, ready to go viral on Instagram.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Transformations -->
+<section class="py-24 overflow-hidden bg-surface-container-lowest" id="transformations">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-12 reveal">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-label-sm font-label-sm text-primary-fixed mb-6">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+                    RAW TO CINEMATIC
+                </div>
+<h2 class="text-display-lg-mobile md:text-headline-xl font-headline-xl mb-4">See the <span class="text-gradient">Transformation</span></h2>
+<p class="text-body-lg text-on-surface-variant max-w-2xl mx-auto">Drag each slider to compare raw restaurant photos with EasyVid cinematic output.</p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14 reveal">
+<div class="glass-card rounded-2xl p-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">auto_fix_high</span>
+<span class="text-body-md text-on-surface-variant">Automatic color grading</span>
+</div>
+<div class="glass-card rounded-2xl p-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">movie</span>
+<span class="text-body-md text-on-surface-variant">Cinematic camera motion</span>
+</div>
+<div class="glass-card rounded-2xl p-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">music_note</span>
+<span class="text-body-md text-on-surface-variant">Trending audio sync</span>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Ristorante & Pizzeria il Sorriso -->
+<article class="glass-card rounded-[2.5rem] p-6 md:p-8 reveal bloom-shadow">
+<div class="mb-6 space-y-3">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-label-sm font-label-sm text-primary uppercase tracking-widest">Ristorante &amp; Pizzeria il Sorriso</span>
+<h3 class="text-headline-md font-headline-md font-bold">Google Maps photos, turned cinematic</h3>
+<p class="text-body-md text-on-surface-variant">Drag to compare the original listing photos with the AI video we delivered.</p>
+</div>
+<div class="transform-slider bloom-shadow select-none" data-transform-slider role="slider" aria-label="Sorriso before and after comparison" aria-valuemin="2" aria-valuemax="98" aria-valuenow="50" tabindex="0">
+<div class="transform-left" data-transform-left>
+<div class="gmaps-mock relative h-full bg-surface-container-lowest flex flex-col">
+<div class="flex items-center gap-2 px-3 py-2 bg-black/40 backdrop-blur-md border-b border-white/5">
+<span class="material-symbols-outlined text-red-500 text-lg" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="text-label-sm font-medium tracking-tight text-on-surface">Google Maps</span>
+</div>
+<div class="grid grid-cols-2 gap-0.5 p-0.5 flex-grow overflow-hidden bg-black/40">
+<div class="relative"><img alt="Sorriso listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/sorriso/photo_1.jpg"/></div>
+<div class="relative"><img alt="Sorriso listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/sorriso/photo_2.jpg"/></div>
+<div class="relative"><img alt="Sorriso listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/sorriso/photo_3.jpg"/></div>
+<div class="relative"><img alt="Sorriso listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/sorriso/photo_4.jpg"/>
+<div class="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none"><span class="text-white font-bold text-label-md">+11</span></div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 text-label-sm font-label-sm text-white/70 bg-black/80 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 uppercase tracking-widest z-20">Raw Input</div>
+</div>
+</div>
+<div class="transform-right">
+<div class="after-media h-full relative">
+<video class="w-full h-full object-cover pointer-events-none" muted loop playsinline autoplay preload="metadata" poster="assets/media/sorriso/poster.jpg" src="assets/media/sorriso/video.mp4"></video>
+<div class="absolute bottom-4 right-4 text-label-sm font-label-sm text-primary bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-md border border-primary/30 uppercase tracking-widest">Cinematic Output</div>
+</div>
+</div>
+<div class="transform-handle" data-transform-handle style="left: 50%;">
+<div class="transform-handle-knob"><span class="material-symbols-outlined text-lg">drag_indicator</span></div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 z-20" data-transform-hint>
+<div class="px-4 py-2 bg-black/60 backdrop-blur-md rounded-full text-label-sm font-bold border border-white/20">DRAG TO COMPARE</div>
+</div>
+</div>
+</article>
+<!-- Trattoria L'Amarena -->
+<article class="glass-card rounded-[2.5rem] p-6 md:p-8 reveal bloom-shadow" style="transition-delay: 0.1s;">
+<div class="mb-6 space-y-3">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-label-sm font-label-sm text-primary uppercase tracking-widest">Trattoria L'Amarena</span>
+<h3 class="text-headline-md font-headline-md font-bold">From static gallery to scroll-stopping reel</h3>
+<p class="text-body-md text-on-surface-variant">Same dishes, same photos — reborn as a high-converting cinematic ad.</p>
+</div>
+<div class="transform-slider bloom-shadow select-none" data-transform-slider role="slider" aria-label="Trattoria before and after comparison" aria-valuemin="2" aria-valuemax="98" aria-valuenow="50" tabindex="0">
+<div class="transform-left" data-transform-left>
+<div class="gmaps-mock relative h-full bg-surface-container-lowest flex flex-col">
+<div class="flex items-center gap-2 px-3 py-2 bg-black/40 backdrop-blur-md border-b border-white/5">
+<span class="material-symbols-outlined text-red-500 text-lg" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="text-label-sm font-medium tracking-tight text-on-surface">Google Maps</span>
+</div>
+<div class="grid grid-cols-2 gap-0.5 p-0.5 flex-grow overflow-hidden bg-black/40">
+<div class="relative"><img alt="Trattoria listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/trattoria/photo_1.jpg"/></div>
+<div class="relative"><img alt="Trattoria listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/trattoria/photo_2.jpg"/></div>
+<div class="relative"><img alt="Trattoria listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/trattoria/photo_3.jpg"/></div>
+<div class="relative"><img alt="Trattoria listing photo" class="absolute inset-0 w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none" draggable="false" loading="lazy" src="assets/media/trattoria/photo_4.jpg"/>
+<div class="absolute inset-0 bg-black/50 flex items-center justify-center pointer-events-none"><span class="text-white font-bold text-label-md">+2</span></div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 text-label-sm font-label-sm text-white/70 bg-black/80 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10 uppercase tracking-widest z-20">Raw Input</div>
+</div>
+</div>
+<div class="transform-right">
+<div class="after-media h-full relative">
+<video class="w-full h-full object-cover pointer-events-none" muted loop playsinline autoplay preload="metadata" poster="assets/media/trattoria/poster.jpg" src="assets/media/trattoria/video.mp4"></video>
+<div class="absolute bottom-4 right-4 text-label-sm font-label-sm text-primary bg-black/60 px-2.5 py-1 rounded-full backdrop-blur-md border border-primary/30 uppercase tracking-widest">Cinematic Output</div>
+</div>
+</div>
+<div class="transform-handle" data-transform-handle style="left: 50%;">
+<div class="transform-handle-knob"><span class="material-symbols-outlined text-lg">drag_indicator</span></div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 z-20" data-transform-hint>
+<div class="px-4 py-2 bg-black/60 backdrop-blur-md rounded-full text-label-sm font-bold border border-white/20">DRAG TO COMPARE</div>
+</div>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- Portfolio Grid -->
+<section class="py-24 bg-surface-container" id="portfolio">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="mb-16 reveal">
+<h2 class="text-headline-xl font-headline-xl mb-4">Our Masterpieces</h2>
+<p class="text-body-md text-on-surface-variant max-w-xl">Browse our library of AI-generated masterpieces across different cuisines.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- Portfolio Items -->
+<div class="group relative aspect-[9/16] rounded-3xl overflow-hidden reveal cursor-pointer" data-video-card style="transition-delay: 0.1s;">
+<video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" muted loop playsinline preload="none" poster="assets/media/sorriso/poster.jpg" src="assets/media/sorriso/video.mp4"></video>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 pointer-events-none"></div>
+<div class="absolute bottom-6 left-6 pointer-events-none">
+<p class="text-label-sm text-primary mb-1">Italian</p>
+<h4 class="text-headline-md font-bold">Ristorante il Sorriso</h4>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity pointer-events-none" data-video-play>
+<div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+<span class="material-symbols-outlined text-white">play_circle</span>
+</div>
+</div>
+</div>
+<div class="group relative aspect-[9/16] rounded-3xl overflow-hidden mt-12 reveal cursor-pointer" data-video-card style="transition-delay: 0.2s;">
+<video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" muted loop playsinline preload="none" poster="assets/media/trattoria/poster.jpg" src="assets/media/trattoria/video.mp4"></video>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 pointer-events-none"></div>
+<div class="absolute bottom-6 left-6 pointer-events-none">
+<p class="text-label-sm text-primary mb-1">Trattoria</p>
+<h4 class="text-headline-md font-bold">Trattoria L'Amarena</h4>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity pointer-events-none" data-video-play>
+<div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+<span class="material-symbols-outlined text-white">play_circle</span>
+</div>
+</div>
+</div>
+<div class="group relative aspect-[9/16] rounded-3xl overflow-hidden reveal cursor-pointer" data-video-card style="transition-delay: 0.3s;">
+<video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" muted loop playsinline preload="none" poster="assets/media/oberhafen/poster.jpg" src="assets/media/oberhafen/video.mp4"></video>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 pointer-events-none"></div>
+<div class="absolute bottom-6 left-6 pointer-events-none">
+<p class="text-label-sm text-primary mb-1">Marketing Ad</p>
+<h4 class="text-headline-md font-bold">Oberhafen-Kantine</h4>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity pointer-events-none" data-video-play>
+<div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+<span class="material-symbols-outlined text-white">play_circle</span>
+</div>
+</div>
+</div>
+<div class="group relative aspect-[9/16] rounded-3xl overflow-hidden mt-12 reveal cursor-pointer" data-video-card style="transition-delay: 0.4s;">
+<video class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" muted loop playsinline preload="none" poster="assets/media/haensel/poster.jpg" src="assets/media/haensel/video.mp4"></video>
+<div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 pointer-events-none"></div>
+<div class="absolute bottom-6 left-6 pointer-events-none">
+<p class="text-label-sm text-primary mb-1">Restaurant</p>
+<h4 class="text-headline-md font-bold">Hänsel und Gretel</h4>
+</div>
+<div class="absolute inset-0 flex items-center justify-center opacity-100 group-hover:opacity-0 transition-opacity pointer-events-none" data-video-play>
+<div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/30">
+<span class="material-symbols-outlined text-white">play_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Bento Grid -->
+<section class="py-24">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<h2 class="text-headline-xl font-headline-xl mb-16 text-center reveal">Why Restaurants Choose EasyVid</h2>
+<div class="grid grid-cols-1 md:grid-cols-12 md:grid-rows-2 gap-gutter h-auto md:h-[600px] auto-rows-auto">
+<!-- Large Feature -->
+<div class="md:col-span-7 md:row-span-2 glass-card rounded-[2.5rem] p-10 flex flex-col justify-between overflow-hidden relative reveal">
+<div class="relative z-10">
+<div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<h3 class="text-headline-xl font-bold mb-4">10x Engagement Rate</h3>
+<p class="text-body-lg text-on-surface-variant max-w-sm">
+                            Video content receives 1200% more shares than text and image content combined. Our AI ensures every frame is thumb-stopping.
+                        </p>
+</div>
+<div class="relative mt-8 h-52 bg-white/5 rounded-2xl border border-white/10 px-6 pb-6 pt-10">
+<div class="flex items-end justify-around h-full gap-2">
+<div class="w-full bg-primary/20 h-[30%] rounded-t-lg"></div>
+<div class="w-full bg-primary/30 h-[45%] rounded-t-lg"></div>
+<div class="w-full bg-primary/50 h-[60%] rounded-t-lg"></div>
+<div class="w-full bg-primary h-[95%] rounded-t-lg relative">
+<span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 text-label-sm font-bold text-primary whitespace-nowrap leading-none">AI VIDEO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Small Feature 1 -->
+<div class="md:col-span-5 md:row-span-1 glass-card rounded-[2.5rem] p-8 reveal self-start" style="transition-delay: 0.1s;">
+<div class="flex gap-6 items-start">
+<div class="w-12 h-12 bg-secondary-container/20 rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary-container">savings</span>
+</div>
+<div>
+<h3 class="text-headline-md font-bold mb-2">95% Cost Reduction</h3>
+<p class="text-body-md text-on-surface-variant">Skip the expensive camera gear, lighting crews, and editing houses. Our AI does it for a fraction of the price.</p>
+</div>
+</div>
+</div>
+<!-- Small Feature 2 -->
+<div class="md:col-span-5 md:row-span-1 amber-gradient rounded-[2.5rem] p-8 text-white reveal self-start" style="transition-delay: 0.2s;">
+<div class="flex gap-6 items-start">
+<div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">shutter_speed</span>
+</div>
+<div>
+<h3 class="text-headline-md font-bold mb-2">Social Ready Instantly</h3>
+<p class="text-white/80">Don't wait weeks for edits. Get your viral-ready reels delivered while the ingredients are still fresh.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Choose Your Aesthetic -->
+<section class="py-24 bg-surface-container-low" id="aesthetics">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16 reveal">
+<h2 class="text-headline-xl font-headline-xl mb-4">Choose Your Aesthetic</h2>
+<p class="text-body-md text-on-surface-variant max-w-2xl mx-auto">Two cinematic styles crafted for restaurant marketing — pick the mood that matches your brand.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="group relative h-32 md:h-40 rounded-3xl overflow-hidden glass-card flex items-center px-8 reveal transition-transform hover:scale-[1.02]">
+<img loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-60 transition-opacity" alt="Warm upscale restaurant interior with golden lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyjCvo6KkbDSmLzuOKfCh1zBglAx-B7mXwYxIj1r_qZ9KWv2AuguLppT9SvNZ0O5jJGDmtRc_iI59m0VrXlgf-AINfdF-Iy6F0fSKpdDZPhrtuv-hR2u-2gsXM4FDEelEiS0ZcGxv0xOJLYaDlu3ojzOsBz-5GOUgdt6esfF5-OrbknvTnAGiIGbQZ7O4-UfdUJsLumNegaFYPr8aDE-RFzJAWSlAHk-ciVRbxhp-shk4IfhyJrLE8T_J5hVViCJy9JtdB0JgqRb4"/>
+<div class="relative z-10">
+<h4 class="text-headline-md font-bold text-white mb-1">Cinematic Luxury</h4>
+<p class="text-body-md text-on-surface-variant">Slow pans, warm light, premium feel.</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-primary relative z-10">arrow_forward_ios</span>
+</a>
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="group relative h-32 md:h-40 rounded-3xl overflow-hidden glass-card flex items-center px-8 reveal transition-transform hover:scale-[1.02]" style="transition-delay: 0.1s;">
+<img loading="lazy" class="absolute inset-0 w-full h-full object-cover opacity-30 group-hover:opacity-60 transition-opacity" alt="Dynamic street food being prepared over flame" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5JvQhQwQvnox2MIpA2QIXerwvoKMzC4zhVSQYX2agG7koXsV3Wyp7fnx92AEOU7faaTZFjPn7TnBHGMV_qUOaDce95Iv450qs_CW2mROV1yZzXlN2H1nUpSiBp14iKuyGKTpIMmGFDSB2bs3zdiqhgectVkkM3FdfsGu2eyhXKW-BNzXbQ9LL6SKyrmTFAAgeXLQEPGk69mA_lEAct_S3TCxZnUOjRvpMrsueQaiZrKK7EBzV-zqYU_hmMi0F6f_-1JK04ValBe8"/>
+<div class="relative z-10">
+<h4 class="text-headline-md font-bold text-white mb-1">Viral TikTok</h4>
+<p class="text-body-md text-on-surface-variant">Fast cuts, trending energy, bold text.</p>
+</div>
+<span class="material-symbols-outlined ml-auto text-primary relative z-10">arrow_forward_ios</span>
+</a>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-24 bg-surface-container" id="faq">
+<div class="max-w-3xl mx-auto px-margin-mobile reveal">
+<h2 class="text-headline-xl font-headline-xl mb-12 text-center">Frequently Asked Questions</h2>
+<div class="space-y-4">
+<div class="glass-card rounded-2xl overflow-hidden">
+<button type="button" data-faq-toggle class="w-full p-6 text-left flex justify-between items-center group" aria-expanded="false">
+<span class="text-headline-md font-bold">Do I need to hire a photographer?</span>
+<span class="material-symbols-outlined transition-transform group-open:rotate-180">expand_more</span>
+</button>
+<div class="hidden p-6 pt-0 text-on-surface-variant border-t border-white/5">
+                        No. We pull photos directly from your Google Maps listing. You don't need to take new photos or send us anything. just share your location link.
+                    </div>
+</div>
+<div class="glass-card rounded-2xl overflow-hidden">
+<button type="button" data-faq-toggle class="w-full p-6 text-left flex justify-between items-center group" aria-expanded="false">
+<span class="text-headline-md font-bold">How long are the videos?</span>
+<span class="material-symbols-outlined transition-transform">expand_more</span>
+</button>
+<div class="hidden p-6 pt-0 text-on-surface-variant border-t border-white/5">
+                        Most videos are 15-30 seconds long, optimized for Reels, TikTok, and Shorts engagement patterns.
+                    </div>
+</div>
+<div class="glass-card rounded-2xl overflow-hidden">
+<button type="button" data-faq-toggle class="w-full p-6 text-left flex justify-between items-center group" aria-expanded="false">
+<span class="text-headline-md font-bold">Can I request specific music?</span>
+<span class="material-symbols-outlined transition-transform">expand_more</span>
+</button>
+<div class="hidden p-6 pt-0 text-on-surface-variant border-t border-white/5">
+                        Yes! We can sync to specific tracks or use our AI to find the best trending royalty-free audio for your niche.
+                    </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24 relative overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img loading="lazy" class="w-full h-full object-cover opacity-20" data-alt="A panoramic wide shot of a luxury restaurant dining room at night. Warm candles on tables, soft glowing lamps, and a sophisticated atmosphere. The scene is slightly blurred to create depth, focusing on the overall mood of premium hospitality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUQ0x24DHhPheJCvcGj7G1RTZ7JlJ9Aa-jQJHrndoEI0kb0_Tc0boNSnEqaQSRwQW3Arv_JRX3g-hPG1fIWRsiwQUEPdOsZQgN9r1vqMzIjTiuM5SvCJrQWMRIYOmUFoSLs6H5fZtQF_7eeMhU1_aVBq8Dtto6Er1_MkbPdmY6HDAPHm4EsP7YnOfh5HTli_Q6z83WNtqxPkDsFH53E76BNTNo7CZZlN4BDBBR9ZYHUE8BnzYYuCgf6dhdFtVDV3l5lg3-y_YtEqk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10 text-center reveal">
+<h2 class="text-display-lg-mobile md:text-display-lg font-display-lg mb-8">Ready to Go Cinematic?</h2>
+<p class="text-body-lg text-on-surface-variant mb-12 max-w-2xl mx-auto">
+                Join 500+ restaurants already dominating social media with AI-powered video commercials.
+            </p>
+<div class="flex flex-col md:flex-row justify-center gap-6">
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="amber-gradient text-white px-10 py-5 rounded-2xl text-headline-md font-bold shadow-[0_0_30px_rgba(255,193,116,0.3)] hover:scale-105 transition-transform inline-block">
+                    Start Your First Video
+                </a>
+<a data-cta href="mailto:fred.sommerfeld@easyvid.online" class="glass-card px-10 py-5 rounded-2xl text-headline-md font-bold hover:bg-white/10 transition-all inline-block">
+                    Talk to an Expert
+                </a>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-background relative w-full py-10 md:py-8 border-t border-white/5">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<!-- Mobile -->
+<div class="flex flex-col gap-8 text-center md:hidden">
+<div>
+<div class="text-headline-md font-headline-md font-bold text-primary mb-3">EasyVid</div>
+<p class="text-body-md text-on-surface-variant">Cinematic AI video ads for restaurants — from easyvid.online.</p>
+</div>
+<div class="flex flex-col gap-3">
+<h5 class="text-label-md font-bold text-on-surface">Quick Links</h5>
+<nav class="flex flex-col gap-2">
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#how">How it Works</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#portfolio">Portfolio</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#faq">FAQ</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" data-cta href="mailto:fred.sommerfeld@easyvid.online">Contact</a>
+</nav>
+</div>
+<div class="flex flex-col gap-3 items-center">
+<h5 class="text-label-md font-bold text-on-surface">Stay Connected</h5>
+<div class="flex gap-4 justify-center">
+<div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+</div>
+</div>
+</div>
+<p class="text-label-sm text-on-surface-variant pt-4 border-t border-white/5">© 2026 EasyVid · easyvid.online</p>
+</div>
+<!-- Desktop -->
+<div class="hidden md:block">
+<div class="flex items-center justify-between gap-10">
+<div class="flex items-center gap-6 shrink-0">
+<span class="text-headline-md font-bold text-primary whitespace-nowrap">EasyVid</span>
+<span class="hidden lg:inline text-body-sm text-on-surface-variant border-l border-white/10 pl-6 max-w-xs">Cinematic AI video ads for restaurants</span>
+</div>
+<nav class="flex items-center justify-center gap-8 flex-1">
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap" href="#how">How it Works</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap" href="#portfolio">Portfolio</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap" href="#faq">FAQ</a>
+<a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap" data-cta href="mailto:fred.sommerfeld@easyvid.online">Contact</a>
+</nav>
+<div class="flex items-center gap-3 shrink-0">
+<div class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-white/5">
+<p class="text-label-sm text-on-surface-variant">© 2026 EasyVid · easyvid.online</p>
+</div>
+</div>
+</div>
+</footer>
+<script src="assets/main.js"></script>
+</body></html>
